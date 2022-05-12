@@ -1,1 +1,4 @@
 Using BS4, try to navigate the tree
+
+Input : url of the product page
+Output: list of strings(user reviews)
