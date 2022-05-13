@@ -1,4 +1,6 @@
 from urllib.parse import urlparse
+from bs4 import BeautifulSoup
+import requests
 
 def get_review_page_url(url:str) -> str:
     parse_res = urlparse(url)
@@ -8,3 +10,10 @@ def get_review_page_url(url:str) -> str:
     ASIN = parse_res.path[1:].split('/')[2]
     new_url = f"{scheme}://{netloc}/{product}/product-reviews/{ASIN}/"
     return new_url
+
+def get_soup(url: str):
+    url = get_review_page_url(url)
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text)
+    return soup
+
