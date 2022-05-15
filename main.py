@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from amz_reviews import Review
 
 url = "https://www.amazon.in/HP-Pavilion-Graphics-35-56cms-14-dv0058TU/product-reviews/B08WB857GB/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
 
@@ -9,7 +10,6 @@ res = requests.get(splash_url, params={
     'wait':2
 })
 
-print(res.text)
 
 soup = BeautifulSoup(res.text, 'html.parser')
 
@@ -17,6 +17,8 @@ reviews = soup.find_all('div', {
     'data-hook':'review'
 })
 
+
+items = []
 for review in reviews:
     title = review.find('a', {
         'data-hook':'review-title'
@@ -26,4 +28,9 @@ for review in reviews:
         'data-hook': 'review-star-rating'
     }).text.replace('out of 5 stars', '').strip())
 
-    print(title, rating)
+    body = review.find('span', {
+        'data-hook': 'review-body'
+    }).text.strip()
+    
+    items.append(Review(title, rating, body))
+
