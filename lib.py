@@ -11,9 +11,12 @@ def get_review_page_url(url:str) -> str:
     new_url = f"{scheme}://{netloc}/{product}/product-reviews/{ASIN}/"
     return new_url
 
-def get_soup(url: str):
+def get_soup(url: str, splash_url: str):
     url = get_review_page_url(url)
-    res = requests.get(url)
-    soup = BeautifulSoup(res.text)
+    res = requests.get(splash_url, params = {
+        "url": url,
+        "wait": 2
+    })
+    soup = BeautifulSoup(res.text, 'html.parser')
     return soup
 
